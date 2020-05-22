@@ -59,20 +59,20 @@ export default function App() {
             <FontAwesome name='plus' size={32} color='#11031D' />
           </TouchableOpacity>
           <View style={{flexDirection:'row' , justifyContent:'space-around'}}>
-            <TouchableOpacity style={{backgroundColor:'#fff' , paddingHorizontal:15,paddingVertical:5 , borderRadius:50}}
+            <TouchableOpacity style={{backgroundColor:(show == 'all') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }} 
             onPress={()=>{
               setShow('all')
             }}>
               <Text style={{ fontSize:15}}>ALL</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:'#fff' , paddingHorizontal:15,paddingVertical:5 , borderRadius:50}}
+            <TouchableOpacity style={{backgroundColor:(show == 'active') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }}
               onPress={()=>{
               setShow('active')
               }}
             >
               <Text style={{ fontSize:15}}>ACTIVE</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:'#fff' , paddingHorizontal:15,paddingVertical:5 , borderRadius:50}}
+            <TouchableOpacity style={{backgroundColor:(show == 'done') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50} }
             onPress={()=>{
               setShow('done')
             }}
@@ -84,9 +84,10 @@ export default function App() {
 
         <FlatList
         data={current}
+        keyExtractor={(item, index) => item.id.toString()}
         renderItem={({ item, index }) => (
 
-            <TouchableOpacity key={index} style={{flexDirection:"row"}}
+            <TouchableOpacity  style={{flexDirection:"row"}}
             onPress={(event)=>{
               let newList = TodoList.map(todo=>{
                 if (todo.id == item.id){

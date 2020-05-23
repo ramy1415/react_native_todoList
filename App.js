@@ -59,6 +59,7 @@ export default function App() {
                   setTodoList([...TodoList,newItem])
                   setnewItem(false)
                   setMyindex(myIndex+1);
+                  setShow('active')
                 }
               }}
               >
@@ -92,7 +93,7 @@ export default function App() {
               data={current}
               keyExtractor={(item, index) => item.id.toString() + item.value}
               renderItem={({ item, index }) => (
-                <View style={{flexDirection:"row",justifyContent:'space-between' , marginVertical:5}}>
+                <View style={{flexDirection:"row",justifyContent:'space-between' , marginVertical:5 ,borderBottomWidth:1,borderColor:'white' , padding:3}}>
 
                   <TouchableOpacity  style={{flexDirection:"row"}}
                   onPress={(event)=>{
@@ -106,9 +107,9 @@ export default function App() {
                   }}
                   >
                     <FontAwesome name={ item.isdone ? 'check-square-o' : 'square-o'} size={32} color={ item.isdone ? '#FF6438' : "#fff"} />
-                    <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.value}</Text>
+                    <Text style={{flexBasis:200,color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.value}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{alignSelf:'flex-end'}}>
                     <FontAwesome name='trash' size={32} color='red' onPress={(event)=>{
                       console.log(item)
                       let newList = TodoList.filter((e)=>{

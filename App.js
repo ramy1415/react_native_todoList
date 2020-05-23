@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
+  ScrollView,
 } from 'react-native'
 import FontAwesome from 'expo-vector-icons/FontAwesome'
 export default function App() {
   const [TodoList, setTodoList] = React.useState([])
   const [current, setcurrent] = React.useState([])
-  const [newItem, setnewItem] = React.useState({id:0,isdone:"",value:""})
+  const [myIndex,setMyindex]= React.useState(0)
+  const [newItem, setnewItem] = React.useState(false)
   const [show,setShow]=React.useState("active")
 
   React.useEffect(()=>{
@@ -34,81 +36,82 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={{flexGrow:.2}}></View>
-      <View style={{flexGrow:1,width:300}}>
+      <View >
+        <View style={{height:100}}>
 
-
-      <View style={styles.header}>
-          <Text style={styles.title}>BABY SHARK</Text>
-          <View style={{flexDirection:'row'}}>
-            <Text style={{color:"#fff" , fontWeight:'bold'}} >TODO</Text>
-            <Text style={{color:"#fff" }} >-dododoooodododo</Text>
-          </View>
-          <TextInput style={{width:240 , backgroundColor:'#fff' }} onChangeText={(text)=>setnewItem({id:TodoList.length,isdone:false,value:text})}
-          value={newItem.value}
-          />
-          <TouchableOpacity 
-          style={{backgroundColor:'#FF6438' , paddingHorizontal:5 , borderRadius:50}}
-          onPress={()=>{
-            if(newItem){
-              setTodoList([...TodoList,newItem])
-              setnewItem({})
-            }
-          }}
-          >
-            <FontAwesome name='plus' size={32} color='#11031D' />
-          </TouchableOpacity>
-          <View style={{flexDirection:'row' , justifyContent:'space-around'}}>
-            <TouchableOpacity style={{backgroundColor:(show == 'all') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }} 
-            onPress={()=>{
-              setShow('all')
-            }}>
-              <Text style={{ fontSize:15}}>ALL</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:(show == 'active') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }}
+        </View>
+        <View style={{height:150,width:300 , marginBottom:20 ,justifyContent:'space-between'}}>
+            <View>
+              <Text style={styles.title}>BABY SHARK</Text>
+            </View>
+            <View style={{flexDirection:'row' , justifyContent:'center'}}>
+              <Text style={{color:"#fff" , fontWeight:'bold'}} >TODO</Text>
+              <Text style={{color:"#fff" }} >-dododoooodododo</Text>
+            </View>
+            <View style={{flexDirection:"row" , justifyContent:'space-evenly'}}>
+              <TextInput style={{width:200 , backgroundColor:'#fff' }} onChangeText={(text)=>setnewItem({id:myIndex,isdone:false,value:text})}
+              value={newItem.value}
+              />
+              <TouchableOpacity 
+              style={{backgroundColor:'#FF6438' , paddingHorizontal:5 , borderRadius:50}}
               onPress={()=>{
-              setShow('active')
-              }}
-            >
-              <Text style={{ fontSize:15}}>ACTIVE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:(show == 'done') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50} }
-            onPress={()=>{
-              setShow('done')
-            }}
-              >
-              <Text style={{ fontSize:15}}>DONE</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-
-        <FlatList
-        data={current}
-        keyExtractor={(item, index) => item.id.toString()}
-        renderItem={({ item, index }) => (
-
-            <TouchableOpacity  style={{flexDirection:"row"}}
-            onPress={(event)=>{
-              let newList = TodoList.map(todo=>{
-                if (todo.id == item.id){
-                  todo.isdone = !todo.isdone
-                  return todo
+                if(newItem){
+                  setTodoList([...TodoList,newItem])
+                  setnewItem(false)
+                  setMyindex(myIndex+1);
                 }
-                return todo
-              })
-              setTodoList(newList)
-            }}
-            >
-              <FontAwesome name={ item.isdone ? 'check-square-o' : 'square-o'} size={32} color={ item.isdone ? '#FF6438' : "#fff"} />
-              <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.value}</Text>
-            </TouchableOpacity>
-        )}
-        />
-        
-        
+              }}
+              >
+                <FontAwesome name='plus' size={32} color='#11031D' />
+              </TouchableOpacity>
+            </View>
+            <View style={{flexDirection:'row' , justifyContent:'space-evenly'}}>
+              <TouchableOpacity style={{backgroundColor:(show == 'all') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }} 
+              onPress={()=>{
+                setShow('all')
+              }}>
+                <Text style={{ fontSize:15}}>ALL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{backgroundColor:(show == 'active') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50 }}
+                onPress={()=>{
+                  setShow('active')
+                }}
+                >
+                <Text style={{ fontSize:15}}>ACTIVE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{backgroundColor:(show == 'done') ? '#FF6438' : "#fff" , paddingHorizontal:15,paddingVertical:5 , borderRadius:50} }
+              onPress={()=>{
+                setShow('done')
+              }}
+              >
+                <Text style={{ fontSize:15}}>DONE</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+          <FlatList
+              data={current}
+              keyExtractor={(item, index) => item.id.toString() + item.value}
+              renderItem={({ item, index }) => (
 
-
+                  <TouchableOpacity  style={{flexDirection:"row"}}
+                  onPress={(event)=>{
+                    let newList = TodoList.map(todo=>{
+                      if (todo.id == item.id){
+                        todo.isdone = !todo.isdone
+                      }
+                      return todo
+                    })
+                    setTodoList(newList)
+                  }}
+                  >
+                    <FontAwesome name={ item.isdone ? 'check-square-o' : 'square-o'} size={32} color={ item.isdone ? '#FF6438' : "#fff"} />
+                    <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.id}{item.value}</Text>
+                  </TouchableOpacity>
+              )}
+              />
       </View>
+
+
     </View>
   )
 }
@@ -117,10 +120,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#11031D',alignItems:'center'
-  },header:{
-    flexWrap:'wrap' , flexDirection:'row' , justifyContent:'space-evenly'
-  },title:{
-    color:'#FF6438',fontSize:30,fontWeight:'bold'
+  }
+  ,title:{
+    color:'#FF6438',fontSize:30,fontWeight:'bold',alignSelf:'center'
   }
 })
 

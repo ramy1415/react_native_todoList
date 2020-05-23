@@ -92,6 +92,7 @@ export default function App() {
               data={current}
               keyExtractor={(item, index) => item.id.toString() + item.value}
               renderItem={({ item, index }) => (
+                <View style={{flexDirection:"row",justifyContent:'space-between' , marginVertical:5}}>
 
                   <TouchableOpacity  style={{flexDirection:"row"}}
                   onPress={(event)=>{
@@ -105,8 +106,12 @@ export default function App() {
                   }}
                   >
                     <FontAwesome name={ item.isdone ? 'check-square-o' : 'square-o'} size={32} color={ item.isdone ? '#FF6438' : "#fff"} />
-                    <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.id}{item.value}</Text>
+                    <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.value}</Text>
                   </TouchableOpacity>
+                  <TouchableOpacity>
+                    <FontAwesome name='trash' size={32} color='red' />
+                  </TouchableOpacity>
+                </View>
               )}
               />
       </View>

@@ -109,7 +109,13 @@ export default function App() {
                     <Text style={{color: item.isdone ? '#FF6438' : "#fff" , marginLeft:10 , fontSize:20}} >{item.value}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity>
-                    <FontAwesome name='trash' size={32} color='red' />
+                    <FontAwesome name='trash' size={32} color='red' onPress={(event)=>{
+                      console.log(item)
+                      let newList = TodoList.filter((e)=>{
+                        return e.id != item.id
+                      })
+                      setTodoList(newList)
+                    }} />
                   </TouchableOpacity>
                 </View>
               )}
